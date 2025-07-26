@@ -13,6 +13,7 @@ class Product(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)], default=0
     )
+    is_active = models.BooleanField(verbose_name="فعال/غیرفعال", default=False)
     
     def __str__(self):
         return f"{self.title}({self.price})"
