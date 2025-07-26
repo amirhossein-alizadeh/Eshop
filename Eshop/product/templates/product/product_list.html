@@ -7,7 +7,11 @@
 
     <ul>
         {% for product in products %}
-            <li style="color: black;">{{product.title}}/{{product.price}}</li>
+            <li style="color: black;">
+                <a href="#">
+                    {{product.title}}/{{product.price}}
+                </a>
+            </li>
         {% endfor %}
     </ul>
 
