@@ -12,8 +12,8 @@ def product_list(request):
     )
     
     
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
+def product_detail(request, product_slug):
+    product = get_object_or_404(Product, slug=product_slug)
     
     return render(
         request, 

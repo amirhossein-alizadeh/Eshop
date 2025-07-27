@@ -7,8 +7,8 @@
 
     <ul>
         {% for product in products %}
-            <li style="color: black;">
-                <a href="#">
+            <li>
+                <a href="{{product.get_absolute_url}}" style="text-decoration: none; color: black">
                     {{product.title}}/{{product.price}}
                 </a>
             </li>

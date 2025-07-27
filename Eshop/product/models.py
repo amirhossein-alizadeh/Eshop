@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-
+from django.urls import reverse
+from django.utils.text import slugify
 # Create your models here.
 class Category(models.Model):
     title = models.CharField(max_length=300)
@@ -13,9 +13,19 @@ class Product(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)], default=0
     )
+    slug = models.SlugField(default="", null=False)
     is_active = models.BooleanField(verbose_name="فعال/غیرفعال", default=False)
+    
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"product_slug": self.slug})
+    
     
     def __str__(self):
         return f"{self.title}({self.price})"
+    
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
     
     
