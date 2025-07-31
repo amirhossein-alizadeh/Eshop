@@ -3,8 +3,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.utils.text import slugify
 # Create your models here.
-class Category(models.Model):
-    title = models.CharField(max_length=300)
+class ProductCategory(models.Model):
+    title = models.CharField(max_length=300, verbose_name="عنوان")
+    title_in_url = models.CharField(max_length=300, verbose_name="عنوان در url", null=True)
 
     def __str__(self):
         return self.title
@@ -14,13 +15,16 @@ class Category(models.Model):
         verbose_name_plural = "دسته بندی ها"
 
 class Product(models.Model):
-    title = models.CharField(max_length=300, verbose_name="نام")
+    title = models.CharField(max_length=300, verbose_name="عنوان")
     price = models.IntegerField(verbose_name="قیمت")
+    category = models.ForeignKey(to=ProductCategory, on_delete=models.CASCADE, verbose_name="دسته بندی", null=True)
     rating = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)], default=0
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        default=1,
+        verbose_name="امتیاز"
     )
     short_description = models.CharField(verbose_name="توضیحات کوتاه", max_length=512, null=True)
-    slug = models.SlugField(default="", null=False, db_index=True)
+    slug = models.SlugField(default="", null=False, db_index=True, verbose_name="اسلاگ")
     is_active = models.BooleanField(verbose_name="فعال/غیرفعال", default=False)
     
     def get_absolute_url(self):
