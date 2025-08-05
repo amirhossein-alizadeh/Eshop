@@ -1,27 +1,19 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.utils.text import slugify
 
 
 # Create your models here.
 
-
-class ProductTag(models.Model):
-    title = models.CharField(max_length=300, verbose_name="عنوان")
-    
-    class Meta:
-        verbose_name = "تگ محصول"
-        verbose_name_plural = "تگ های محصولات"
-
-    def __str__(self):
-        return self.title
-
 class ProductCategory(models.Model):
-    title = models.CharField(max_length=300, verbose_name="عنوان")
+    title = models.CharField(max_length=300, verbose_name="عنوان", db_index=True)
     title_in_url = models.CharField(
-        max_length=300, verbose_name="عنوان در url", null=True
+        max_length=300,
+        verbose_name="عنوان در url",
+        db_index=True
     )
+    is_active = models.BooleanField(verbose_name="فعال / غیرفعال", default=False)
+    is_delete = models.BooleanField(verbose_name="حذف شده / نشده", default=False)
 
     def __str__(self):
         return self.title
@@ -34,25 +26,19 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=300, verbose_name="عنوان")
     price = models.IntegerField(verbose_name="قیمت")
-    category = models.ForeignKey(
+    category = models.ManyToManyField(
         to=ProductCategory,
-        on_delete=models.CASCADE,
         verbose_name="دسته بندی",
-        null=True,
         related_name="products"
     )
-    product_tags = models.ManyToManyField(ProductTag, verbose_name="تگ های محصول", related_name="products")
-    rating = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-        default=1,
-        verbose_name="امتیاز",
-    )
     short_description = models.CharField(
-        verbose_name="توضیحات کوتاه", max_length=512, null=True
+        verbose_name="توضیحات کوتاه", max_length=512
     )
-    slug = models.SlugField(default="", null=False, db_index=True, verbose_name="اسلاگ")
-    is_active = models.BooleanField(verbose_name="فعال/غیرفعال", default=False)
-
+    full_description = models.TextField(verbose_name="توضیحات اصلی")
+    slug = models.SlugField(default="", null=False, verbose_name="اسلاگ")
+    is_active = models.BooleanField(verbose_name="فعال / غیرفعال", default=False)
+    is_delete = models.BooleanField(verbose_name="حذف شده / نشده", default=False)
+    
     def get_absolute_url(self):
         return reverse("product_detail", kwargs={"product_slug": self.slug})
 
@@ -66,3 +52,15 @@ class Product(models.Model):
     class Meta:
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"
+
+
+class ProductTag(models.Model):
+    title = models.CharField(max_length=300, verbose_name="عنوان", db_index=True)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name="محصول", related_name="product_tags")
+    
+    class Meta:
+        verbose_name = "تگ محصول"
+        verbose_name_plural = "تگ های محصولات"
+
+    def __str__(self):
+        return self.title

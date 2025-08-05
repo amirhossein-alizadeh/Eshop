@@ -10,14 +10,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = [
         '__str__',
         'price',
-        'rating',
         'is_active'
     ]
     list_editable = [
         'is_active'
     ]
     list_filter = [
-        'rating',
         'is_active'
     ]
 
