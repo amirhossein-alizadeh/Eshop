@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
@@ -6,4 +5,4 @@ from django.views import View
 class home(View):
     
     def get(self, request):
-        return HttpResponse("اولین پروژه فروشگاهی من")
+        return render(request=request, template_name="home/home_index.html")

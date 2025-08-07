@@ -32,7 +32,9 @@ class Product(models.Model):
         related_name="products"
     )
     short_description = models.CharField(
-        verbose_name="توضیحات کوتاه", max_length=512
+        verbose_name="توضیحات کوتاه",
+        max_length=512,
+        db_index=True
     )
     full_description = models.TextField(verbose_name="توضیحات اصلی")
     slug = models.SlugField(default="", null=False, verbose_name="اسلاگ")
