@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'product',
+    'django_render_partial'
 ]
 
 MIDDLEWARE = [
