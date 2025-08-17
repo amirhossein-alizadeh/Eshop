@@ -1,41 +1,40 @@
 from django import forms
 
+from .models import ContactUs
 
-class ContactUsForm(forms.Form):
-    full_name = forms.CharField(
-        label='نام و نام خانوادگی',
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'نام و نام خانوادگی',
-                'class': 'form-control'
-            }
-        )
-    )
-    email = forms.EmailField(
-        label='ایمیل',
-        widget=forms.EmailInput(
-            attrs={
-                'placeholder': 'ایمیل',
-                'class': 'form-control'
-            }
-        )
-    )
-    subject = forms.CharField(
-        label='موضوع',
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'موضوع',
-                'class': 'form-control'
-            }
-        )
-    )
-    message = forms.CharField(
-        label='متن پیام',
-        widget=forms.Textarea(
-            attrs={
-                'placeholder': 'متن پیام',
+
+class ContactUsModelForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields =[
+            'subject',
+            'full_name',
+            'email',
+            'message'
+        ]
+        widgets = {
+            'full_name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'id': 'message'
-            }
-        )
-    )
+                'placeholder': 'نام و نام خانوادگی'
+            }),
+            'subject': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'موضوع'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'ایمیل'
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'message',
+                'placeholder': 'متن پیام',
+                'rows': '5'
+            }),
+        }
+        labels = {
+            'subject': 'موضوع',
+            'email':'ایمیل',
+            'full_name':'نام و نام خانوادگی',
+            'message':'متن پیام',
+        }
