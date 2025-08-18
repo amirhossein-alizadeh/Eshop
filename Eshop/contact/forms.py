@@ -38,3 +38,4 @@ class ContactUsModelForm(forms.ModelForm):
             'full_name':'نام و نام خانوادگی',
             'message':'متن پیام',
         }
+        

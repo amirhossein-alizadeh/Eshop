@@ -14,25 +14,25 @@
 	    				<div class="status alert alert-success" style="display: none"></div>
 				    	<form id="main-contact-form" class="contact-form row" name="contact-form" method="post">
 							{% csrf_token %}
-							<div class="col-md-6 form-group {% if contact_us_form.full_name.errors %}text-danger{% endif %}">
-								{{contact_us_form.full_name.label_tag}}
-								{{contact_us_form.full_name}}
-								{{contact_us_form.full_name.errors}}
+							<div class="col-md-6 form-group {% if form.full_name.errors %}text-danger{% endif %}">
+								{{form.full_name.label_tag}}
+								{{form.full_name}}
+								{{form.full_name.errors}}
 							</div>
-							<div class="col-md-6 form-group {% if contact_us_form.email.errors %}text-danger{% endif %}">
-								{{contact_us_form.email.label_tag}}
-								{{contact_us_form.email}}
-								{{contact_us_form.email.errors}}
+							<div class="col-md-6 form-group {% if form.email.errors %}text-danger{% endif %}">
+								{{form.email.label_tag}}
+								{{form.email}}
+								{{form.email.errors}}
 							</div>
-							<div class="col-md-12 form-group {% if contact_us_form.subject.errors %}text-danger{% endif %}">
-								{{contact_us_form.subject.label_tag}}
-								{{contact_us_form.subject}}
-								{{contact_us_form.subject.errors}}
+							<div class="col-md-12 form-group {% if form.subject.errors %}text-danger{% endif %}">
+								{{form.subject.label_tag}}
+								{{form.subject}}
+								{{form.subject.errors}}
 							</div>
-							<div class="col-md-12 form-group {% if contact_us_form.message.errors %}text-danger{% endif %}">
-								{{contact_us_form.message.label_tag}}
-								{{contact_us_form.message}}
-								{{contact_us_form.message.errors}}
+							<div class="col-md-12 form-group {% if form.message.errors %}text-danger{% endif %}">
+								{{form.message.label_tag}}
+								{{form.message}}
+								{{form.message.errors}}
 							</div>
 				            <div class="form-group col-md-12">
 				                <input type="submit" name="submit" class="btn btn-primary pull-right" value="ارسـال">

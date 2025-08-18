@@ -1,24 +1,20 @@
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView
 from .models import Product
 
-def product_list(request):
-    product_list = Product.objects.all()
-    return render(
-        request,
-        "product/product_list.html",
-        {
-            "products":product_list
-        }
-    )
+
+
+class ProductListView(ListView):
+    template_name = 'products/product_list.html'
+    model = Product
+    context_object_name = 'products'
     
+    def get_queryset(self):
+        base_query = super().get_queryset()
+        data = base_query.filter(price__gt=200000)
+        return data
     
-def product_detail(request, product_slug):
-    product = get_object_or_404(Product, slug=product_slug)
+class ProductDetailView(DetailView):
+    template_name = 'product/product_detail.html'
+    model = Product
     
-    return render(
-        request, 
-        "product/product_detail.html",
-        {
-            "product": product
-        }
-    )
