@@ -9,10 +9,10 @@ class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
     
-    def get_queryset(self):
-        base_query = super().get_queryset()
-        data = base_query.filter(price__gt=200000)
-        return data
+    # def get_queryset(self):
+    #     base_query = super().get_queryset()
+    #     data = base_query.filter(price__gt=200000)
+    #     return data
     
 class ProductDetailView(DetailView):
     template_name = 'product/product_detail.html'

@@ -50,6 +50,12 @@ class Product(models.Model):
         blank=True,
         on_delete=models.CASCADE
     )
+    image = models.ImageField(
+        verbose_name="تصویر محصول",
+        upload_to="images/products",
+        null=True,
+        blank=True
+    )
     short_description = models.CharField(
         verbose_name="توضیحات کوتاه",
         max_length=512,
@@ -61,7 +67,7 @@ class Product(models.Model):
     is_delete = models.BooleanField(verbose_name="حذف شده / نشده", default=False)
     
     def get_absolute_url(self):
-        return reverse("product_detail", kwargs={"product_slug": self.slug})
+        return reverse("product_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return f"{self.title}({self.price})"
