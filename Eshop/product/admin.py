@@ -4,9 +4,6 @@ from .models import Product, ProductBrand, ProductCategory, ProductTag
 
 
 class ProductAdmin(admin.ModelAdmin):
-    prepopulated_fields={
-        'slug':['title']
-    }
     list_display = [
         '__str__',
         'price',
