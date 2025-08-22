@@ -15,3 +15,11 @@ class RegisterForm(forms.Form):
         max_length=120,
         label="تکرار رمز عبور",
     )
+    
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get("password")
+        confirm_password = self.cleaned_data.get("confirm_password")
+        if password == confirm_password:
+            return confirm_password
+        else:
+            raise forms.ValidationError("رمز عبور و تکرار رمز عبور مغایرت دارند")

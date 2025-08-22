@@ -13,12 +13,13 @@
                             {% csrf_token %}
                             {{register_form.email.label_tag}}
                             {{register_form.email}}
+							{{register_form.email.errors}} 
                             {{register_form.password.label_tag}}
                             {{register_form.password}}
+							{{register_form.password.errors}}                            
                             {{register_form.confirm_password.label_tag}}
                             {{register_form.confirm_password}}
-                            {{register_form.errors}}
-                            
+							{{register_form.confirm_password.errors}}                            
 							<button type="submit" class="btn btn-default">ثبت نام</button>
 						</form>
 					</div><!--/sign up form-->
