@@ -2,9 +2,10 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
-from .forms import RegisterForm
+from .forms import LoginForm, RegisterForm
 from .models import User
 from django.utils.crypto import get_random_string
+from django.contrib.auth import login, logout
 
 # Create your views here.
 class RegisterView(View):
@@ -54,11 +55,49 @@ class RegisterView(View):
             
 class LoginView(View):
     def get(self, request):
+        login_form = LoginForm()
         return render(
             request=request,
             template_name="account/login.html",
-            context={}
+            context={
+                "login_form":login_form
+            }
         )
+        
+    def post(self, request):
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            
+            user_email = login_form.cleaned_data.get("email")
+            user: User = User.objects.filter(email__iexact=user_email).first()
+            if user:
+                user_pass = login_form.cleaned_data.get("password")
+                password_correct = user.check_password(user_pass)
+                if password_correct:
+                    login(
+                        request=request,
+                        user=user
+                    )
+                    return redirect(reverse("home"))
+                else:
+                    login_form.add_error(
+                        field="email",
+                        error="ایمیل یا رمز وارد شده نادرست است"
+                    )
+            else:
+                login_form.add_error(
+                    field="email",
+                    error="ایمیل یا رمز وارد شده نادرست است"
+                )
+        return render(
+            request=request,
+            template_name="account/login.html",
+            context={
+                "login_form": login_form
+            }
+        )
+                
+
         
         
 class ActivateAccount(View):
