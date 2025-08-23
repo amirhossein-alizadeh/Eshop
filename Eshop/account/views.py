@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -40,8 +41,8 @@ class RegisterView(View):
                 new_user.set_password(password)
                 new_user.save()
                 return redirect(reverse("login"))
+                #TODO: send activation email
             
-        else:
             return render(
                 request=request,
                 template_name="account/register.html",
@@ -58,3 +59,21 @@ class LoginView(View):
             template_name="account/login.html",
             context={}
         )
+        
+        
+class ActivateAccount(View):
+    def get(self, request, activate_code):
+        
+        user: User = User.objects.filter(email_active_code=activate_code).first()
+        
+        if user:
+            if not user.is_active:
+                user.is_active = True
+                user.email_active_code = get_random_string(128)
+                user.save()
+                return redirect(reverse("login"))
+            else:
+                #TODO show your account already activated
+                pass
+        else:
+            raise Http404
