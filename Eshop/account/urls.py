@@ -1,11 +1,13 @@
 from os import name
 from django.urls import path
 
-from .views import ActivateAccount, LoginView, RegisterView
+from .views import ActivateAccount, ForgotPasswordView, LoginView, RegisterView, ResetPasswordView
 
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name="register"),
     path("login/", LoginView.as_view(), name="login"),
-    path("activate-account/<str:activate_code>", ActivateAccount.as_view(), name="activate_account")
+    path("activate-account/<str:activate_code>", ActivateAccount.as_view(), name="activate_account"),
+    path("forget-password/", ForgotPasswordView.as_view(), name="forget_pass"),
+    path("reset-password/<str:email_active_code>", ResetPasswordView.as_view(), name="reset_password")
 ]

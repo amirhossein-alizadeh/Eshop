@@ -1,8 +1,8 @@
-from django.http import Http404
+from django.http import Http404, HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
-from .forms import LoginForm, RegisterForm
+from .forms import ForgotPasswordForm, LoginForm, RegisterForm, ResetPasswordForm
 from .models import User
 from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout
@@ -115,4 +115,73 @@ class ActivateAccount(View):
                 #TODO show your account already activated
                 pass
         else:
+            raise Http404
+        
+        
+class ForgotPasswordView(View):
+    def get(self, request: HttpRequest):
+        forgot_pass_form = ForgotPasswordForm()
+        return render(
+            request=request,
+            template_name="account/forget_password.html",
+            context={
+                "forgot_pass_form": forgot_pass_form
+            }
+        )
+        
+    def post(self, request: HttpRequest):
+        
+        forgot_pass_form = ForgotPasswordForm(request.POST)
+        
+        if forgot_pass_form.is_valid():
+            email = forgot_pass_form.cleaned_data.get("email")
+            user:User = User.objects.filter(email__iexact=email).first()
+            if user:
+                if user.is_active:
+                    email_active_code = user.email_active_code
+                    #TODO: send email to user
+                    return redirect(reverse("login"))
+            
+            forgot_pass_form.add_error(
+                field="email",
+                error="ایمیل وارد شده در سیستم وجود ندارد"
+            )         
+        
+        return render(
+            request=request,
+            template_name="account/forget_password.html",
+            context={
+                "forgot_pass_form": forgot_pass_form
+            }
+        )
+        
+    
+class ResetPasswordView(View):
+    def get(self, request: HttpRequest, email_active_code):
+        user : User = User.objects.filter(email_active_code__iexact=email_active_code).first()
+        if user:
+            reset_pass_form = ResetPasswordForm()
+        
+            return render(
+                request=request,
+                template_name="account/reset_password.html",
+                context={
+                    "reset_pass_form": reset_pass_form,
+                    "user":user
+                }
+            )
+        raise Http404
+    
+    def post(self, request:HttpRequest, email_active_code):
+        reset_pass_form = ResetPasswordForm(request.POST)
+        if reset_pass_form.is_valid():
+            user : User = User.objects.filter(email_active_code__iexact=email_active_code).first()
+            if user:
+                if user.is_active:
+                    password = reset_pass_form.cleaned_data.get("password")
+                    user.set_password(password)
+                    user.email_active_code = get_random_string(128)
+                    user.save()
+                    return redirect(reverse("login"))
+            
             raise Http404

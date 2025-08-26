@@ -3,9 +3,9 @@
 {% block title %}ورود به حساب کاربری{% endblock title %}
 
 {% block content %}
-<section id="form"><!--form-->
+		<section id="form"><!--form-->
 			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3">
+				<div class="col-sm-6 col-md-offset-3">
 					<div class="login-form"><!--login form-->
 						<h2>ورود به حساب کاربـری :</h2>
 						<form method="post" action="{% url "login" %}">
@@ -16,6 +16,7 @@
 							{{login_form.password.label_tag}}
 							{{login_form.password}}
 							{{login_form.password.erros}}
+							<p><a href="{% url "forget_pass" %}"> فراموشی رمز عبور </a></p>
 							<button type="submit" class="btn btn-default">ورود</button>
 						</form>
 					</div><!--/login form-->
