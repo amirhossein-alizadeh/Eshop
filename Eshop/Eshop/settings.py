@@ -136,3 +136,20 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from local_settings import(
+    email_host,
+    email_backend,
+    email_use_tls,
+    email_host_user,
+    email_host_password,
+    email_port
+)
+
+EMAIL_BACKEND = email_backend
+EMAIL_USE_TLS = email_use_tls
+EMAIL_HOST = email_host
+EMAIL_HOST_USER = email_host_user
+EMAIL_HOST_PASSWORD = email_host_password
+EMAIL_PORT = email_port
+
