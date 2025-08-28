@@ -6,6 +6,7 @@ from .forms import ForgotPasswordForm, LoginForm, RegisterForm, ResetPasswordFor
 from .models import User
 from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout
+from utils.email_service import send_email
 
 # Create your views here.
 class RegisterView(View):
@@ -41,16 +42,24 @@ class RegisterView(View):
                 )
                 new_user.set_password(password)
                 new_user.save()
+                send_email(
+                    subject="فعال سازی حساب کاربری",
+                    to=new_user.email,
+                    context={
+                        "user": new_user
+                        },
+                    template_name="email/activate_account.html"
+                )
                 return redirect(reverse("login"))
-                #TODO: send activation email
+                
             
-            return render(
-                request=request,
-                template_name="account/register.html",
-                context={
-                    "register_form":register_form
-                }
-            )
+        return render(
+            request=request,
+            template_name="account/register.html",
+            context={
+                "register_form":register_form
+            }
+        )
             
             
 class LoginView(View):
@@ -138,8 +147,14 @@ class ForgotPasswordView(View):
             user:User = User.objects.filter(email__iexact=email).first()
             if user:
                 if user.is_active:
-                    email_active_code = user.email_active_code
-                    #TODO: send email to user
+                    send_email(
+                        subject="بازیابی کلمه عبور",
+                        to=user.email,
+                        context={
+                            "user":user
+                        },
+                        template_name="email/forgot_password.html"
+                    )
                     return redirect(reverse("login"))
             
             forgot_pass_form.add_error(
@@ -185,3 +200,8 @@ class ResetPasswordView(View):
                     return redirect(reverse("login"))
             
             raise Http404
+        
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect(reverse("login"))
