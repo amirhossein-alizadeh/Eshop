@@ -45,3 +45,42 @@ class SiteSettings(models.Model):
     def __str__(self):
         return self.site_title
     
+    
+class FooterLinkBox(models.Model):
+    title = models.CharField(
+        max_length=300,
+        verbose_name="عنوان"
+    )
+    is_active = models.BooleanField(verbose_name="فعال / غیرفعال")
+    
+    class Meta:
+        verbose_name = "دسته بندی لینک های فوتر"
+        verbose_name_plural = "دسته بندی های لینک های فوتر"
+        
+    def __str__(self):
+        return self.title
+
+
+
+class FooterLink(models.Model):
+    title = models.CharField(
+        max_length=300,
+        verbose_name="عنوان"
+    )
+    url = models.URLField(
+        max_length=500,
+        verbose_name="لینک"
+    )
+    footer_link_box = models.ForeignKey(
+        to=FooterLinkBox,
+        on_delete=models.CASCADE,
+        verbose_name="دسته بندی",
+        related_name="links"
+    )
+    
+    class Meta:
+        verbose_name = "لینک فوتر"
+        verbose_name_plural = "لینک های فوتر"
+        
+    def __str__(self):
+        return self.title
