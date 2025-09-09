@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
-from site_settings.models import FooterLinkBox, SiteSettings
+from site_settings.models import FooterLinkBox, SiteSettings, Slider
 
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'home/home_index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sliders = Slider.objects.filter(is_active=True)
+        context["sliders"] = sliders
+        return context
     
 def header_component(request):
     site_settings = SiteSettings.objects.filter(is_main_setting=True).first()
