@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'product',
     'contact',
     'account',
+    'article',
     'site_settings',
     'django_render_partial'
 ]
