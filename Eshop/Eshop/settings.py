@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'account',
     'article',
     'site_settings',
+    
     'django_render_partial'
 ]
 
