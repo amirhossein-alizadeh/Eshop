@@ -1,6 +1,7 @@
 venv/
 __pycache__/
 .idea/
+uploads/
 
 *.pyc
 local_*.py
