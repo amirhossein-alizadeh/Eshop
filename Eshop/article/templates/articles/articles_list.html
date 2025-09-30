@@ -1,6 +1,6 @@
 {% extends "shared/_layout.html" %}
-
-
+{% load thumbnail %}
+{% load jalali_tags %}
 {% block title %}
     لیست مقالات
 {% endblock title %}
@@ -18,9 +18,9 @@
 							<h3>{{article.title}}</h3>
 							<div class="post-meta">
 								<ul>
-									<li><i class="fa fa-user"></i> کاربـر 1</li>
-									<li><i class="fa fa-clock-o"></i> 17:20 ب.ظ</li>
-									<li><i class="fa fa-calendar"></i> 28 تیـر 1397</li>
+									<li><i class="fa fa-user"></i> {{article.author}}</li>
+									<li><i class="fa fa-clock-o"></i> {{article.created_date.time}} </li>
+									<li><i class="fa fa-calendar"></i> {{article.created_date.date | to_jalali}} </li>
 								</ul>
 								<span>
 										<i class="fa fa-star"></i>
@@ -31,7 +31,9 @@
 								</span>
 							</div>
 							<a href="">
-								<img src="{{article.image.url}}" alt="">
+								{% thumbnail article.image "862x398" crop="center" quality=100 as im %}
+								<img src="{{im.url}}" alt="">
+								{% endthumbnail %}
 							</a>
 							<p>{{article.short_description}}</p>
 							<a class="btn btn-primary" href="">ادامـه مطلب</a>

@@ -1,5 +1,8 @@
 from django.db import models
 
+from account.models import User
+from datetime import datetime
+
 # Create your models here.
 
 
@@ -35,6 +38,8 @@ class Article(models.Model):
     short_description = models.TextField(verbose_name="توضیحات کوتاه")
     text = models.TextField(verbose_name="متن کامل مقاله")
     categories = models.ManyToManyField(to=ArticleCategory, verbose_name="دسته بندی ها", related_name="articles")
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name="نویسنده", null=True, editable=False)
+    created_date = models.DateTimeField(verbose_name="تاریخ ثبت", default=datetime.today(), editable=False)
     is_active = models.BooleanField(verbose_name="فعال / غیرفعال", default=True)
     
     class Meta:
