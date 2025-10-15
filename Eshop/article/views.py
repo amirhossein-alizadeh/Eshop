@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from .models import Article, ArticleCategory
 
@@ -16,6 +17,16 @@ class ArticleListView(ListView):
             if category:
                 query_set = query_set.filter(categories__url_title__iexact=category)
         return query_set
+
+
+class ArticleDetailView(DetailView):
+    template_name = 'articles/article_detail.html'
+    model = Article
+    context_object_name = "article"
+    def get_queryset(self):
+        query_set = super(ArticleDetailView, self).get_queryset()
+        query = query_set.filter(is_active=True)
+        return query
 
 
 def article_categories_component(request):
