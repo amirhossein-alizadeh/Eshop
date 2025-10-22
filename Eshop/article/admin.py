@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpRequest
 
-from .models import ArticleCategory, Article
+from .models import ArticleCategory, Article, ArticleComment
 
 # Register your models here.
 class ArticleCategoryAdmin(admin.ModelAdmin):
@@ -38,3 +38,5 @@ class ArticleAdmin(admin.ModelAdmin):
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)
 
 admin.site.register(Article, ArticleAdmin)
+
+admin.site.register(ArticleComment)

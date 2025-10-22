@@ -54,11 +54,13 @@
 
                 <div class="media commnets">
                     <a class="pull-right" href="#">
-                        <img class="media-object" src="images/blog/Customer.jpg" alt="">
+                        {% thumbnail article.author.avatar "121x86" quality=95 crop="center" as img %}
+                            <img class="media-object" src="{{img.url}}" alt="{{ article.author }}">
+                        {% endthumbnail %}
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">نویسنده: {{ article.author }}</h4>
-
+                        <h4 class="media-heading">نویسنده : {{ article.author }}</h4>
+                        <p>{{ article.author.about_user }}</p>
                         <div class="blog-socials">
                             <ul>
                                 <li><a href=""><i class="fa fa-facebook"></i></a></li>
@@ -69,7 +71,7 @@
                             <a class="btn btn-primary" href="">سایـر مطالب نویسنده</a>
                         </div>
                     </div>
-                </div><!--Comments-->
+                </div>
                 <div class="response-area">
                     <h2>پاسخ ها (3)</h2>
                     <ul class="media-list">
