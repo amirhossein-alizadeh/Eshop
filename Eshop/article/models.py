@@ -58,7 +58,8 @@ class ArticleComment(models.Model):
         on_delete=models.CASCADE,
         verbose_name="والد",
         null=True,
-        blank=True
+        blank=True,
+        related_name="subcomments"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر")
     created_date = models.DateTimeField(verbose_name="تاریخ ثبت نظر", auto_now_add=True, editable=False)

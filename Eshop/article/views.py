@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
-from .models import Article, ArticleCategory
+from .models import Article, ArticleCategory, ArticleComment
 
 
 class ArticleListView(ListView):
@@ -27,6 +27,13 @@ class ArticleDetailView(DetailView):
         query_set = super(ArticleDetailView, self).get_queryset()
         query = query_set.filter(is_active=True)
         return query
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article = kwargs["object"]
+        article_comments = ArticleComment.objects.filter(article_id=article.id, parent=None).prefetch_related("subcomments")
+        context["comments"] = article_comments
+        return context
 
 
 def article_categories_component(request):
@@ -38,3 +45,5 @@ def article_categories_component(request):
     return render(request=request,
                   template_name="articles/components/article_categories_list.html",
                   context=context)
+    
+    
