@@ -1,6 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import DetailView
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+from django.views.generic import DetailView, CreateView
 from django.views.generic.list import ListView
+from django.views import View
+from django.urls import reverse
+from .forms import SendCommentModelForm
 from .models import Article, ArticleCategory, ArticleComment
 
 
@@ -33,7 +37,22 @@ class ArticleDetailView(DetailView):
         article = kwargs["object"]
         article_comments = ArticleComment.objects.filter(article_id=article.id, parent=None).prefetch_related("subcomments")
         context["comments"] = article_comments
+
+        add_comment_form = SendCommentModelForm(initial={
+            "article": article.id,
+            "user": self.request.user,
+            "parent": None
+        })
+        context["add_comment_form"] = add_comment_form
         return context
+
+
+class AddComment(View):
+    def post(self, request: HttpRequest):
+        form = SendCommentModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("home"))
 
 
 def article_categories_component(request):
@@ -45,5 +64,5 @@ def article_categories_component(request):
     return render(request=request,
                   template_name="articles/components/article_categories_list.html",
                   context=context)
-    
-    
+
+
