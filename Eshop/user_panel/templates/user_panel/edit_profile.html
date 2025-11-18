@@ -1,0 +1,12 @@
+{% extends "shared/_layout.html" %}
+
+{% block title %}
+	تغییر مشخصات کاربر
+{% endblock %}
+
+{% block content %}
+    <form action="">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+{% endblock %}
