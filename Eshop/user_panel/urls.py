@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import EditProfileView
+from .views import EditProfileView, UserPanelView
 
 urlpatterns = [
-    path("", EditProfileView.as_view(), name="edit_profile_page")
+    path("", UserPanelView.as_view(), name="user_panel"),
+    path("edit-profile", EditProfileView.as_view(), name="edit_profile")
 ]

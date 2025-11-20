@@ -9,5 +9,6 @@ class EditProfileModelForm(forms.ModelForm):
             "first_name",
             "last_name",
             "avatar",
-            "about_user"
+            "about_user",
+            "address"
         ]
