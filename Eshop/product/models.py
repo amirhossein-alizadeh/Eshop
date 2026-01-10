@@ -24,7 +24,8 @@ class ProductCategory(models.Model):
 
 
 class ProductBrand(models.Model):
-    title = models.CharField(max_length=300, verbose_name='نام برند', db_index=True)
+    title = models.CharField(max_length=300, verbose_name='نام برند')
+    title_in_url = models.CharField(max_length=300, verbose_name='نام برند در URL', db_index=True, null=True, blank=True)
     is_active = models.BooleanField(verbose_name='فعال / غیرفعال', default=False)
     
     class Meta:
@@ -48,7 +49,8 @@ class Product(models.Model):
         verbose_name='برند',
         null=True,
         blank=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="products"
     )
     image = models.ImageField(
         verbose_name="تصویر محصول",

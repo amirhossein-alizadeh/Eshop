@@ -56,7 +56,7 @@ class AddComment(View):
 
 
 def article_categories_component(request):
-    article_catgories = ArticleCategory.objects.filter(is_active=True, parent__id__iexact=None).all()
+    article_catgories = ArticleCategory.objects.filter(is_active=True, parent__id__iexact=None).prefetch_related("articlecategory_set").all()
     context = {
         "article_catgories": article_catgories,
     }
