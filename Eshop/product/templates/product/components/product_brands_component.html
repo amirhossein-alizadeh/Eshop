@@ -3,7 +3,7 @@
     <div class="brands-name">
         <ul class="nav nav-pills nav-stacked">
             {% for brand in brands %}
-                <li><a href="{% url 'products_brand_filter' brand=brand.title_in_url %}"> <span class="pull-left">({{ brand.products.count }})</span>{{ brand.title }}</a></li>
+                <li><a href="{% url 'products_brand_filter' brand=brand.title_in_url %}"> <span class="pull-left">({{ brand.products_count }})</span>{{ brand.title }}</a></li>
 
             {% endfor %}
 

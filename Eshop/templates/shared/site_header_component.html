@@ -47,7 +47,7 @@
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
                             {% if request.user.is_authenticated %}
-                                <li><a href="#"><i class="fa fa-user"></i> حساب کاربـری</a></li>
+                                <li><a href="{% url 'user_panel' %}"><i class="fa fa-user"></i> حساب کاربـری</a></li>
                                 {% if request.user.is_superuser %}
                                     <li><a href="/admin"><i class="fa fa-user"></i> پنل ادمین</a></li>
                                 {% endif %}

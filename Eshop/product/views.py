@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Count
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
@@ -34,7 +35,8 @@ def product_categories_component(request: HttpRequest):
     return render(request, "product/components/product_categories_component.html", context)
 
 def product_brands_component(request: HttpRequest):
-    product_brands = ProductBrand.objects.filter(is_active=True).all()
+    product_brands = ProductBrand.objects.filter(is_active=True).annotate(products_count=Count("products")).all()
+
     context = {
         "brands": product_brands
     }

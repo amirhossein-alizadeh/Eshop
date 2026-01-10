@@ -11,6 +11,11 @@ from account.models import User
 class UserPanelView(TemplateView):
     template_name = "user_panel/user_panel.html"
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data["user"] = User.objects.filter(id=self.request.user.id).first()
+        return data
+
 
 class EditProfileView(View):
     def get(self, request):
