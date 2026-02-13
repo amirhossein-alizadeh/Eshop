@@ -101,3 +101,18 @@ class Slider(models.Model):
         
     def __str__(self):
         return self.title
+
+
+class CommercialBanner(models.Model):
+    title = models.CharField(max_length=125, verbose_name="عنوان")
+    url = models.URLField(max_length=512, verbose_name="URL", null=True, blank=True)
+    image = models.ImageField(upload_to="images/banners", verbose_name="تصویر بنر")
+    is_active = models.BooleanField(verbose_name="فعال / غیرفعال")
+    is_deleted = models.BooleanField(verbose_name="حذف شده / نشده")
+
+    class Meta:
+        verbose_name = "بنر تبلیغاتی"
+        verbose_name_plural = "بنر های تبلیغاتی"
+
+    def __str__(self):
+        return self.title
