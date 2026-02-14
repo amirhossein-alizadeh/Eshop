@@ -104,9 +104,17 @@ class Slider(models.Model):
 
 
 class CommercialBanner(models.Model):
+    class BannerPosition(models.TextChoices):
+        main_page = "main_page", "صفحه اصلی"
+        product_detail_page = "product_detail_page", "صفحه جزئیات محصول"
+        products_list_page = "products_list_page", "صفحه لیست محصولات"
+        blog_detail_page = "blog_detail_page", "صفحه جزئیات مقاله"
+        blogs_list_page = "blogs_list_page", "صفحه لیست مقالات"
+
     title = models.CharField(max_length=125, verbose_name="عنوان")
     url = models.URLField(max_length=512, verbose_name="URL", null=True, blank=True)
     image = models.ImageField(upload_to="images/banners", verbose_name="تصویر بنر")
+    position = models.CharField(max_length=125, verbose_name="صفحه نمایش بنر", choices=BannerPosition.choices, default="main_page")
     is_active = models.BooleanField(verbose_name="فعال / غیرفعال")
     is_deleted = models.BooleanField(verbose_name="حذف شده / نشده")
 
