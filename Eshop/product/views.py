@@ -2,6 +2,8 @@ from django.db.models.aggregates import Count
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+
+from site_settings.models import CommercialBanner
 from .models import Product, ProductCategory, ProductBrand
 
 
@@ -21,6 +23,13 @@ class ProductListView(ListView):
             query = query.filter(brand__title_in_url__iexact=brand_name)
 
         return query
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        banners = CommercialBanner.objects.filter(is_active=True, position=CommercialBanner.BannerPosition.products_list_page).all()
+        data["banners"] = banners
+        print(data)
+        return data
 
 class ProductDetailView(DetailView):
     template_name = 'product/product_detail.html'

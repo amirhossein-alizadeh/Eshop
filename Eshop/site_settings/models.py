@@ -105,7 +105,6 @@ class Slider(models.Model):
 
 class CommercialBanner(models.Model):
     class BannerPosition(models.TextChoices):
-        main_page = "main_page", "صفحه اصلی"
         product_detail_page = "product_detail_page", "صفحه جزئیات محصول"
         products_list_page = "products_list_page", "صفحه لیست محصولات"
         blog_detail_page = "blog_detail_page", "صفحه جزئیات مقاله"
