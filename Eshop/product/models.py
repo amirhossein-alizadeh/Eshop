@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from account.models import User
+
 
 # Create your models here.
 
@@ -25,16 +27,17 @@ class ProductCategory(models.Model):
 
 class ProductBrand(models.Model):
     title = models.CharField(max_length=300, verbose_name='نام برند')
-    title_in_url = models.CharField(max_length=300, verbose_name='نام برند در URL', db_index=True, null=True, blank=True)
+    title_in_url = models.CharField(max_length=300, verbose_name='نام برند در URL', db_index=True, null=True,
+                                    blank=True)
     is_active = models.BooleanField(verbose_name='فعال / غیرفعال', default=False)
-    
+
     class Meta:
         verbose_name = 'برند'
         verbose_name_plural = 'برندها'
-    
+
     def __str__(self):
         return self.title
-    
+
 
 class Product(models.Model):
     title = models.CharField(max_length=300, verbose_name="عنوان")
@@ -67,13 +70,12 @@ class Product(models.Model):
     slug = models.SlugField(default="", null=False, verbose_name="اسلاگ")
     is_active = models.BooleanField(verbose_name="فعال / غیرفعال", default=False)
     is_delete = models.BooleanField(verbose_name="حذف شده / نشده", default=False)
-    
+
     def get_absolute_url(self):
         return reverse("product_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return f"{self.title}({self.price})"
-
 
     class Meta:
         verbose_name = "محصول"
@@ -83,10 +85,23 @@ class Product(models.Model):
 class ProductTag(models.Model):
     title = models.CharField(max_length=300, verbose_name="عنوان", db_index=True)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name="محصول", related_name="product_tags")
-    
+
     class Meta:
         verbose_name = "تگ محصول"
         verbose_name_plural = "تگ های محصولات"
 
     def __str__(self):
         return self.title
+
+
+class ProductVisit(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="محصول", related_name="visit")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر", null=True, blank=True, related_name="visit")
+    ip = models.CharField(max_length=30, verbose_name="آدرس IP")
+
+    class Meta:
+        verbose_name = "بازدید محصول"
+        verbose_name_plural = "بازدیدهای محصولات"
+
+    def __str__(self):
+        return f"{self.product.title}/{self.ip}"

@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Count
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
@@ -15,7 +16,8 @@ class HomeView(TemplateView):
         context["sliders"] = sliders
         latest_products = Product.objects.filter(is_active=True, is_delete=False).order_by("-id")[:12]
         context["latest_products"] = group_list(latest_products)
-        print(context["latest_products"])
+        most_visited_products = Product.objects.filter(is_active=True, is_delete=False).annotate(visit_count=Count("visit")).order_by("-visit_count")[:12]
+        context["most_visited_products"] = group_list(most_visited_products)
         return context
     
 def header_component(request):
